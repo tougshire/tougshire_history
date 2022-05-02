@@ -64,3 +64,9 @@ class History(models.Model):
             print (e)
 
         return f'{"mdy".format(self.when.strftime("%Y-%m-%d"))}: {self.modelname}: {self.objectid} [{self.fieldname}] changed to "{new_value_trunc}"'
+
+    def get_line_display(self):
+        object = apps.get_model(self.app_label, self.modelname).objects.get(pk=self.objectid)
+        new_value_trunc = self.new_value[:17:]+'...' if len(self.new_value) > 20 else self.new_value
+
+        return f'{(self.when.strftime("%Y-%m-%d"))}: {self.modelname}: {object} {self.fieldname} changed to "{new_value_trunc}"'
